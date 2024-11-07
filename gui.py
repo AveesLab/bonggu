@@ -17,6 +17,10 @@ def get_selected_values():
     print(selected_values)
     return selected_values
 
+def quit_bonggu():
+    app.destroy()
+
+
 # frame
 frame_model = Frame(app, relief = 'solid')
 frame_model.pack(side = 'left', fill = 'both', expand = True)
@@ -45,9 +49,10 @@ qt_type = ['f32', 'f16', 'bf16', 'q8_0', 'tq1_0', 'tq2_0', 'auto']
 combobox_qt = ttk.Combobox(frame_qt, width = 10, height = 10, values = qt_type)
 combobox_qt.pack()
 combobox_qt.set('(Select)')
-btn = Button(frame_opt, text = 'Start', command = download_model)
-btn.pack()
-
+btn_start = Button(frame_opt, text = 'Start', command = download_model)
+btn_start.pack()
+btn_quit = Button(frame_opt, text = 'Quit', command = quit_bonggu)
+btn_quit.pack()
 
 # photoimage
 # image = PhotoImage(file = 'images/BongGu.JPG')

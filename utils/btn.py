@@ -18,17 +18,22 @@ def download_model():
         subprocess.check_call([sys.executable, '-m', 'pip', 'intall', '--upgrade', 'huggingface_hub'])
         from huggingface_hub import snapshot_download
     name = repo_id[selected_values['model']]
-    snapshot_download(repo_id = name, local_dir = 'models', 
-                      local_dir_use_symlinks = False, revision = 'main')
+
+    repo = name.split('/')
+    model_dir, gguf_name = repo[-1], repo[-1] + '.gguf'
+    model_path = '../models/'
+    if not os.path.isdir(os.path.join(model_path, model_dir)):
+        snapshot_download(repo_id = name, local_dir = os.path.join(model_path, model_dir), 
+                          local_dir_use_symlinks = False, revision = 'main')
     print("Start git clone")
     subprocess.run(['git', 'clone', 'https://github.com/ggerganov/llama.cpp.git', '../llama.cpp'])
     print("make")
     subprocess.run(['make', '-C', '../llama.cpp/'])
     print("install")
     subprocess.run(['pip', 'install', '-r', '../llama.cpp/requirements.txt'])
-    gguf_name = repo_id['test'].split('/')[-1] + '.gguf'
+    
     llama_dir = '../llama.cpp/'
-    model_path = 'models/'
+    
     print("convert")
     subprocess.run(['python', os.path.join(llama_dir, 'convert_hf_to_gguf.py'), 'models', '--outfile', gguf_name, '--outtype', selected_values['qt']])
     
