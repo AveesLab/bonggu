@@ -1,6 +1,7 @@
 from huggingface_hub import snapshot_download
 import argparse
 import sys
+import subprocess
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Download Open Source LLM Weight File in Huggingface")
@@ -25,4 +26,16 @@ if __name__ == "__main__":
     args = parse_args()
     snapshot_download(repo_id = args.model, local_dir = args.save_dir, 
                       local_dir_use_symlinks = args.symlinks, revision = args.revision)
+    
+    print("Start git clone")
+    subprocess.run(['git', 'clone', 'https://github.com/ggerganov/llama.cpp.git', '../llama.cpp'])
+    print("make")
+    subprocess.run(['make', '-C', '../llama.cpp/'])
+    print("install")
+    subprocess.run(['pip', 'install', '-r', '../llama.cpp/requirements.txt'])
+    print("convert")
+    subprocess.run(['python', '../llama.cpp/convert_hf_to_gguf.py', 'models', '--outfile', 'llama-3-open-ko-8b.gguf', '--outtype', 'q8_0'])
+    print("mv")
+    subprocess.run(['mv', 'llama-3-open-ko-8b.gguf', '../llama.cpp/models'])
+    subprocess.run(['../llama.cpp/llama-cli', '-m', '../llama.cpp/models/llama-3-open-ko-8b.gguf', '-p', '안녕', '-cnv'])
     print("Finish main.py")
