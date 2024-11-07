@@ -1,6 +1,10 @@
 import sys, os
-from PIL import Image, ImageTk
-
+import subprocess
+try:
+    from PIL import Image, ImageTk
+except:
+    subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'Pillow'])
+    from PIL import Image, ImageTk
 
 def jpg_to_png(path):
     jpg = Image.open(path)

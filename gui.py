@@ -1,3 +1,4 @@
+import platform
 from tkinter import *
 from tkinter import ttk
 from utils.btn import *
@@ -8,6 +9,7 @@ from utils.tools import *
 class BongGuGUI(Tk):
     def __init__(self):
         super().__init__()
+        self.os = platform.system()
         self.title("BongGu")
         self.geometry('400x300')
         self.resizable(False, False)
@@ -63,4 +65,7 @@ class BongGuGUI(Tk):
         info_dict = {'model' : model,
                      'qt' : qt,
                      'mode' : mode}
-        download_model(info_dict)
+        if self.os == 'Darwin':
+            download_model_mac(info_dict)
+        elif self.os == 'Windows':
+            download_model_win(info_dict)

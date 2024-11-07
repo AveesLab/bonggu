@@ -1,6 +1,6 @@
 from gui import *
 
 if __name__ == "__main__":
-    print("Welcom BongGu")
+    print("Welcome BongGu")
     bonggu = BongGuGUI()
     bonggu.mainloop()
