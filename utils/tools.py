@@ -7,3 +7,27 @@ def jpg_to_png(path):
     png = ImageTk.PhotoImage(resized_jpg)
     return png # png
 
+def bonggu_with_start():
+    print("        ／￣￣￣￣＼         ███████  ████████   █████   ██████  ████████")
+    print("      ／                 ＼       ██          ██       ██    ██  ██          ██    ")
+    print("    ｜      ●      ●      ｜      █████     ██       ██    ██  ██          ██    ")
+    print("    ｜      ◡      ◡      ｜      ██          ██       ██    ██  ██          ██    ")
+    print("     ＼      ︶︶       ／       ██          ██        █████   ██████     ██    ")
+    print("       ＼＿＿＿＿＿／ ")
+    print("         ｜       ｜")
+    print("       ／           ＼")
+    print("      ｜｜       ｜｜")
+    print("      ～～       ～～ ")
+
+def bonggu_with_quit():
+    print("        ／￣￣￣￣＼         ██████   ██    ██  ██  ████████")
+    print("      ／                 ＼       ██    ██   ██  ██       ██   ")
+    print("    ｜      ●      ●      ｜      ██████      ██         ██   ")
+    print("    ｜      ◡      ◡      ｜      ██    ██    ██         ██   ")
+    print("     ＼      ︶︶       ／       ██    ██    ██         ██   ")
+    print("       ＼＿＿＿＿＿／          ██████     ██         ██   ")
+    print("         ｜       ｜")
+    print("       ／           ＼")
+    print("      ｜｜       ｜｜")
+    print("      ～～       ～～ ")
+

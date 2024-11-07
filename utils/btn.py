@@ -35,22 +35,13 @@ def download_model():
     llama_dir = '../llama.cpp/'
     
     print("convert")
-    subprocess.run(['python', os.path.join(llama_dir, 'convert_hf_to_gguf.py'), 
-                    os.path.join(model_path, model_dir), '--outfile', gguf_name, 
-                    '--outtype', selected_values['qt']])
+    # subprocess.run(['python', os.path.join(llama_dir, 'convert_hf_to_gguf.py'), 
+                    # os.path.join(model_path, model_dir), '--outfile', gguf_name, 
+                    # '--outtype', selected_values['qt']])
     
     print("mv")
-    subprocess.run(['mv', gguf_name, os.path.join(llama_dir, 'models/')])
-    subprocess.run(['../llama.cpp/llama-cli', '-m', os.path.join(llama_dir, 'models/', gguf_name), 
-                    '-p', "I believe the meaning of life is", '-n', '128'])
+    # subprocess.run(['mv', gguf_name, os.path.join(llama_dir, 'models/')])
+    # subprocess.run(['../llama.cpp/llama-cli', '-m', os.path.join(llama_dir, 'models/', gguf_name), 
+    #                 '-p', "I believe the meaning of life is", '-n', '128'])
     
     print("Finish main.py")
-
-
-
-# def get_selected_values():
-    
-#     selected_values['model'] = combobox_models.get()
-#     selected_values['qt'] = combobox_qt.get()
-#     print(selected_values)
-#     return selected_values
