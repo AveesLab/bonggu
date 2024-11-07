@@ -10,7 +10,7 @@ class BongGuGUI(Tk):
     def __init__(self):
         super().__init__()
         self.title("BongGu")
-        self.geometry('600x400')
+        self.geometry('400x300')
         self.resizable(False, False)
         
         self.model_list = ['LG-EXAONE', 'LLaMA2', 'LLaMA3']
@@ -29,9 +29,9 @@ class BongGuGUI(Tk):
         
 
 
-        # self.png = jpg_to_png('images/BongGu.JPG')
-        # self.label_img = Label(self.top_frame, image = self.png, text = 'BongGu', compound = 'left', font=("Helvetica", 32), padx = 40)
-        # self.label_img.pack(side = 'left')
+        self.png = jpg_to_png('images/BongGu.JPG')
+        self.label_img = Label(self.top_frame, image = self.png, text = 'BongGu', compound = 'left', font=("Helvetica", 32), padx = 40)
+        self.label_img.pack(side = 'left')
 
         self.make_combobox(self.model_list, self.left_frame, "Model")
         self.make_combobox(self.qt_list, self.right_frame, "Quantization")
@@ -54,4 +54,4 @@ class BongGuGUI(Tk):
     
     def make_button(self, frame, name, fn):
         btn = Button(frame, text = name, command = fn)
-        btn.pack()
+        btn.pack(side = LEFT, padx = 10)
