@@ -1,24 +1,22 @@
-import sys, os
-from tkinter import *
-from tkinter import ttk
 import subprocess
 from utils.tools import *
 
 
 repo_id = {'test' : 'beomi/Llama-3-Open-Ko-8B',
-            'LLaMA3.1' : "meta-llama/Llama-3.1-8B",
+            'LLaMA3' : "meta-llama/Llama-3-8B-Instruct",
             'Mistral7B' : 'mistralai/Mistral-7B-v0.1',
             'EXAONE': 'LGAI-EXAONE/EXAONE-3.0-7.8B-Instruct'}
 
 selected_values = {'model' : 'LLaMA3.1', 'qt' : 'q8_0'}
 
-def download_model():
+
+def download_model(info):
     try:
         from huggingface_hub import snapshot_download
     except:
         subprocess.check_call([sys.executable, '-m', 'pip', 'intall', '--upgrade', 'huggingface_hub'])
         from huggingface_hub import snapshot_download
-    name = repo_id[selected_values['model']]
+    name = repo_id[info['model']]
 
     repo = name.split('/')
     model_dir, gguf_name = repo[-1], repo[-1] + '.gguf'
@@ -39,10 +37,14 @@ def download_model():
     if not check_file(os.path.join(llama_dir, 'models/', gguf_name)):
         subprocess.run(['python', os.path.join(llama_dir, 'convert_hf_to_gguf.py'), 
                         os.path.join(model_path, model_dir), '--outfile', gguf_name, 
-                        '--outtype', selected_values['qt']])
+                        '--outtype', info['qt']])
     
         subprocess.run(['mv', gguf_name, os.path.join(llama_dir, 'models/')])
-    subprocess.run(['../llama.cpp/llama-cli', '-m', os.path.join(llama_dir, 'models/', gguf_name), 
-                    '-p', "I believe the meaning of life is", '-n', '128'])
     
+    if info['mode'] == 'Basic':
+        subprocess.run(['../llama.cpp/llama-cli', '-m', os.path.join(llama_dir, 'models/', gguf_name), 
+                        '-p', "I believe the meaning of life is", '-n', '128'])
+    elif info['mode'] == 'Conversation':
+        subprocess.run(['../llama.cpp/llama-cli', '-m', os.path.join(llama_dir, 'models/', gguf_name), 
+                        '-p', "I believe the meaning of life is", '-cnv'])
     print("Finish main.py")
