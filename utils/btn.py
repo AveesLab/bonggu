@@ -25,21 +25,25 @@ def download_model():
     if not os.path.isdir(os.path.join(model_path, model_dir)):
         snapshot_download(repo_id = name, local_dir = os.path.join(model_path, model_dir), 
                           local_dir_use_symlinks = False, revision = 'main')
-    print("Start git clone")
-    subprocess.run(['git', 'clone', 'https://github.com/ggerganov/llama.cpp.git', '../llama.cpp'])
-    print("make")
-    subprocess.run(['make', '-C', '../llama.cpp/'])
-    print("install")
-    subprocess.run(['pip', 'install', '-r', '../llama.cpp/requirements.txt'])
+    # print("Check llama.cpp")
+    # subprocess.run(['git', 'clone', 'https://github.com/ggerganov/llama.cpp.git', '../llama.cpp'])
+    # print("make")
+    # subprocess.run(['make', '-C', '../llama.cpp/'])
+    # print("install")
+    # subprocess.run(['pip', 'install', '-r', '../llama.cpp/requirements.txt'])
     
     llama_dir = '../llama.cpp/'
     
     print("convert")
-    subprocess.run(['python', os.path.join(llama_dir, 'convert_hf_to_gguf.py'), 'models', '--outfile', gguf_name, '--outtype', selected_values['qt']])
+    subprocess.run(['python', os.path.join(llama_dir, 'convert_hf_to_gguf.py'), 
+                    os.path.join(model_path, model_dir), '--outfile', gguf_name, 
+                    '--outtype', selected_values['qt']])
     
     print("mv")
-    subprocess.run(['mv', gguf_name, os.path.join(llama_dir, model_path)])
-    subprocess.run(['../llama.cpp/llama-cli', '-m', os.path.join(llama_dir, model_path, gguf_name), '-p', '안녕', '-cnv'])
+    subprocess.run(['mv', gguf_name, os.path.join(llama_dir, 'models/')])
+    subprocess.run(['../llama.cpp/llama-cli', '-m', os.path.join(llama_dir, 'models/', gguf_name), 
+                    '-p', "I believe the meaning of life is", '-n', '128'])
+    
     print("Finish main.py")
 
 
