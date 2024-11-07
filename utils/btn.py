@@ -1,8 +1,15 @@
-import sys
+import sys, os
 from tkinter import *
 from tkinter import ttk
 import subprocess
 
+
+repo_id = {'test' : 'beomi/Llama-3-Open-Ko-8B',
+            'LLaMA3.1' : "meta-llama/Llama-3.1-8B",
+            'Mistral7B' : 'mistralai/Mistral-7B-v0.1',
+            'EXAONE': 'LGAI-EXAONE/EXAONE-3.0-7.8B-Instruct'}
+
+selected_values = {'model' : 'LLaMA3.1', 'qt' : 'q8_0'}
 
 def download_model():
     try:
@@ -10,8 +17,26 @@ def download_model():
     except:
         subprocess.check_call([sys.executable, '-m', 'pip', 'intall', '--upgrade', 'huggingface_hub'])
         from huggingface_hub import snapshot_download
+    name = repo_id[selected_values['model']]
+    snapshot_download(repo_id = name, local_dir = 'models', 
+                      local_dir_use_symlinks = False, revision = 'main')
+    print("Start git clone")
+    subprocess.run(['git', 'clone', 'https://github.com/ggerganov/llama.cpp.git', '../llama.cpp'])
+    print("make")
+    subprocess.run(['make', '-C', '../llama.cpp/'])
+    print("install")
+    subprocess.run(['pip', 'install', '-r', '../llama.cpp/requirements.txt'])
+    gguf_name = repo_id['test'].split('/')[-1] + '.gguf'
+    llama_dir = '../llama.cpp/'
+    model_path = 'models/'
+    print("convert")
+    subprocess.run(['python', os.path.join(llama_dir, 'convert_hf_to_gguf.py'), 'models', '--outfile', gguf_name, '--outtype', selected_values['qt']])
     
-    return
+    print("mv")
+    subprocess.run(['mv', gguf_name, os.path.join(llama_dir, model_path)])
+    subprocess.run(['../llama.cpp/llama-cli', '-m', os.path.join(llama_dir, model_path, gguf_name), '-p', '안녕', '-cnv'])
+    print("Finish main.py")
+
 
 
 # def get_selected_values():

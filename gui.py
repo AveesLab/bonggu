@@ -1,6 +1,7 @@
 import sys
 from tkinter import *
 from tkinter import ttk
+from utils.btn import *
 
 app = Tk()
 app.title("BongGu")
@@ -9,12 +10,6 @@ app.resizable(False, False)
 
 
 selected_values = {'model' : "LG-EXAONE", 'qt' : 'q8_0'}
-
-def start_bonggu():
-
-
-    return
-
 
 def get_selected_values():
     selected_values['model'] = combobox_models.get()
@@ -50,7 +45,7 @@ qt_type = ['f32', 'f16', 'bf16', 'q8_0', 'tq1_0', 'tq2_0', 'auto']
 combobox_qt = ttk.Combobox(frame_qt, width = 10, height = 10, values = qt_type)
 combobox_qt.pack()
 combobox_qt.set('(Select)')
-btn = Button(frame_opt, text = 'Start', command = get_selected_values)
+btn = Button(frame_opt, text = 'Start', command = download_model)
 btn.pack()
 
 
