@@ -14,7 +14,8 @@ class BongGuGUI(Tk):
         self.geometry('400x300')
         self.resizable(False, False)
         
-        self.model_list = ['LG-EXAONE', 'LLaMA2', 'LLaMA3', 'test']
+        self.llm_list = ['LG-EXAONE', 'LLaMA2', 'LLaMA3', 'test']
+        self.lmm_list = ["LLAVA-v1"]
         self.qt_list = ['f32', 'f16', 'bf16', 'q8_0', 'tq1_0', 'tq2_0', 'auto']
         self.mode_list = ['Basic', 'Conversation', 'Interactive']
 
@@ -34,7 +35,8 @@ class BongGuGUI(Tk):
         self.label_img = Label(self.top_frame, image = self.png, text = 'BongGu', compound = 'left', font=("Helvetica", 32), padx = 40)
         self.label_img.pack(side = 'left')
 
-        self.combo_model = self.make_combobox(self.model_list, self.left_frame, "Model")
+        self.combo_llm = self.make_combobox(self.llm_list, self.left_frame, "LLM")
+        self.combo_lmm = self.make_combobox(self.lmm_list, self.left_frame, "LMM")
         self.combo_qt = self.make_combobox(self.qt_list, self.right_frame, "Quantization")
         self.combo_mode = self.make_combobox(self.mode_list, self.right_frame, "Mode")
         
@@ -59,10 +61,12 @@ class BongGuGUI(Tk):
         btn.pack(side = LEFT, padx = 10)
     
     def read_val(self):
-        model = self.combo_model.get()
+        llm = self.combo_llm.get()
+        lmm = self.combo_lmm.get()
         qt = self.combo_qt.get()
         mode = self.combo_mode.get()
-        info_dict = {'model' : model,
+        info_dict = {'llm' : llm,
+                     'lmm' : lmm,
                      'qt' : qt,
                      'mode' : mode}
         if self.os == 'Darwin':
